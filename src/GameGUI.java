@@ -13,6 +13,8 @@ import javax.swing.JTextField;
 
 public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	
+	private JTextField gameOverField;
+	
 	public GameGUI() throws FileNotFoundException {
 		setLayout(null);
 		setBackground(Color.BLACK);
@@ -120,6 +122,37 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 				//startNewGame();
 			}        
 		});
+	}
+	
+	private void endGame() {
+		removeAll();
+		
+		Font font1 = new Font("SansSerif", Font.BOLD, 40);
+		gameOverField = new JTextField("Game Over");
+		gameOverField.setEditable(false);
+		gameOverField.setSize(300,50);
+		gameOverField.setFont(font1);
+		gameOverField.setBackground(Color.BLACK);
+		gameOverField.setForeground(Color.WHITE);
+		gameOverField.setLocation(150, 245);
+		gameOverField.setHorizontalAlignment(JTextField.CENTER);
+		add(gameOverField);
+		gameOverField.setVisible(true);
+		
+		JButton b1 = new JButton("Play Again");
+		b1.setSize(100,50);
+		b1.setLocation(250, 300);
+		add(b1);
+		
+		b1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				titleScreen();
+		    }          
+		});
+		
+		
+		//time.stop();
 	}
 	
 
