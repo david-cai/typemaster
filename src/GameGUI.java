@@ -4,8 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -13,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Timer;
+
 
 public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	
@@ -30,10 +34,13 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	private int difficulty;
 	private int levelCounter = 1;
 	private int selectDiff;
+	private ArrayList<Word> wordsInGame;
+	private ArrayList<String> wordOptions;
 	
 	public GameGUI() throws FileNotFoundException {
 		setLayout(null);
 		setBackground(Color.BLACK);
+		wordOptions = getWords("medium_length.txt");
 		currentWord = new JTextField("");
 		titleScreen();
 	}
@@ -224,7 +231,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		time = new Timer(100, this);
 		time.setInitialDelay(0);
 
-		
+		wordsInGame = new ArrayList<Word>();
 		points = 0;
 		currentTime = 0;
 		difficulty = 210;
@@ -264,6 +271,111 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		time.stop();
 	}
 	
+	public void enterUserWord() {
+		String userInput = currentWord.getText();
+		currentWord.setText("");
+		if(wordIsInGame(userInput)) {
+			points = points + userInput.length();
+			pointCount.setText(""+points);
+			removeWord(userInput);
+			updateUI();
+		}
+	}
+	
+	public boolean wordIsInGame(String userInput) {
+		java.util.Iterator<Word> wordIterator = wordsInGame.iterator();
+		while (wordIterator.hasNext()) {
+			Word thisWord = wordIterator.next();
+			if (thisWord.equals(userInput)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void removeWord(String userInput) {
+		java.util.Iterator<Word> wordIterator = wordsInGame.iterator();
+		while(wordIterator.hasNext()) {
+			Word thisWord = wordIterator.next();
+			if(thisWord.equals(userInput)) {
+				remove(thisWord.wordField);
+				wordIterator.remove();
+			}
+		}
+	}
+	
+
+	private void makeNewWord() {
+			String randomWord = getRandomWord();
+			Random r = new Random();
+			int randNum = r.nextInt(5) + levelCounter + getSelectDiff();
+			Word newWord = new Word(randomWord, randNum, this);
+			wordsInGame.add(newWord);
+	}
+	
+	private String getRandomWord() {
+		Random r = new Random();
+		int index = r.nextInt(wordOptions.size());
+		return wordOptions.get(index);
+	}
+	
+
+	public boolean collision() {
+		java.util.Iterator<Word> wordIterator = wordsInGame.iterator();
+		while(wordIterator.hasNext()) {
+			Word current = wordIterator.next();
+			if(current.bottomBoard()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	private void moveDown() {
+		java.util.Iterator<Word> wordIterator = wordsInGame.iterator();
+		while(wordIterator.hasNext()) {
+			Word thisWord = wordIterator.next();
+			thisWord.updateWordField();
+		}
+		updateUI();
+	}
+
+	private void adjustDifficulty() {
+
+		if (currentTime == 0 || currentTime % (difficulty / 10) == 0) {
+			difficulty--;
+			int diffMod;
+			if (getSelectDiff() == 0) {
+				diffMod = 30;
+			} else if (getSelectDiff() == 1) {
+				diffMod = 25;
+			} else {
+				diffMod = 20;
+			}
+			if (difficulty % diffMod == 0) {
+				levelCounter++;
+				levelCount.setText(""+levelCounter);
+			}
+			makeNewWord();
+			
+		}
+	}
+	
+    public static ArrayList<String> getWords(String inputFile) throws FileNotFoundException {
+        
+    	File f = new File(inputFile);
+        Scanner input =  new Scanner(f);
+       
+        ArrayList<String> wordOptions = new ArrayList<String>();
+        while(input.hasNext()) {
+            wordOptions.add(input.next());
+        }
+        input.close();
+        return wordOptions;
+    }
+
+	
 	public void setSelectDiff(int i) {
 		this.selectDiff = i;
 	}
@@ -274,11 +386,14 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void actionPerformed(ActionEvent arg0) {
+		currentTime++;
+		moveDown();
+		if(collision()) {
+			endGame();
+		}
+		adjustDifficulty();
 	}
-
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -296,5 +411,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 
 }
