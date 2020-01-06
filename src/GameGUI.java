@@ -6,16 +6,25 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.Timer;
+//import javax.swing.Timer;
+
+import java.util.TimerTask;
+//import java.util.Timer;
+
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 
 public class GameGUI extends JPanel implements KeyListener, ActionListener{
@@ -29,13 +38,36 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	JLabel levelCount;
 	private JTextField gameOverField;
 	private int points;
-	private Timer time;
+	private javax.swing.Timer time;
+	private java.util.Timer timer2;
 	private int currentTime;
 	private int difficulty;
 	private int levelCounter = 1;
 	private int selectDiff;
 	private ArrayList<Word> wordsInGame;
 	private ArrayList<String> wordOptions;
+	
+	private char c;
+	private char nextC;
+	private char thirdC;
+	private char fourthC;
+	private char fifthC;
+	private JLabel letter;
+	private JLabel second;
+	private JLabel third;
+	private JLabel fourth;
+	private JLabel fifth;
+	private JLabel beat;
+	private JLabel statusCheck;
+	private JLabel status;
+	private JLabel score;
+	private JLabel strike;
+	private JLabel countdown;
+	private MediaPlayer player;
+	private int scoreCount = 0;
+	private int strikeCount = 0;
+	private int x = 150;
+	private int startCount = 5;
 	
 	public GameGUI() throws FileNotFoundException {
 		setLayout(null);
@@ -86,6 +118,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		endlessBtn.setLocation(325, 250);
 		endlessBtn.setFont(font2);
 		
+		//right now speed brings to music, create anothoer button
 		speedBtn.setSize(300,50);
 		speedBtn.setLocation(150, 325);
 		speedBtn.setFont(font1);
@@ -106,6 +139,12 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				difficultySelect();
+		    }          
+		});
+		speedBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				startMusic();
 		    }          
 		});
 		//need to add functionality for other 2
@@ -236,7 +275,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		add(level);
 		add(levelCount);
 		setVisible(true);
-		time = new Timer(100, this);
+		time = new javax.swing.Timer(100, this);
 		time.setInitialDelay(0);
 
 		wordsInGame = new ArrayList<Word>();
@@ -382,6 +421,295 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
         input.close();
         return wordOptions;
     }
+    
+    ///////Music Mode (maybe separate to diff class)
+    
+    public void startMusic() {
+		removeAll();
+		
+		new JFXPanel();
+		//String musicFile = "./src/flight.mp3";
+//		URL fileUrl = GameGUI.class.getResource("flight.mp3");
+//		Media sound = new Media(fileUrl.toString());
+//		player = new MediaPlayer(sound);
+//		player.play();
+//		player.setVolume(.5);
+		
+		
+		Font font1 = new Font("SansSerif", Font.PLAIN, 32);
+		Font font2 = new Font("SansSerif", Font.PLAIN, 64);
+		
+		beat = new JLabel("");
+		beat.setSize(100,40);
+		beat.setLocation(100, 190);
+		beat.setForeground(Color.WHITE);
+		beat.setFont(font1);
+		beat.setHorizontalAlignment(JTextField.CENTER);
+		
+		statusCheck = new JLabel("");
+		statusCheck.setVisible(false);
+		
+		status = new JLabel("");
+		status.setSize(200,40);
+		status.setLocation(200, 400);
+		status.setForeground(Color.WHITE);
+		status.setFont(font1);
+		status.setHorizontalAlignment(JTextField.CENTER);
+		
+		countdown = new JLabel(""+startCount);
+		countdown.setSize(200,40);
+		countdown.setLocation(200, 150);
+		countdown.setForeground(Color.WHITE);
+		countdown.setFont(font1);
+		countdown.setHorizontalAlignment(JTextField.CENTER);
+		
+		TimerTask startTask = new TimerTask() {
+
+			@Override
+			public void run() {
+				if (startCount > 0) {
+
+					countdown.setText(""+startCount);
+					startCount--;
+				} else if (startCount >= -3) {
+					startCount--;
+					countdown.setText("Go!");
+				} else {
+					countdown.setText("");
+				}
+			}
+			
+		};
+		
+		TimerTask checkHit = new TimerTask() {
+
+			@Override
+			public void run() {
+				if (statusCheck.getText() != "") {
+					status.setText("MISSED!");
+					scoreCount--;
+					strikeCount++;
+					strike.setText("Strike:" + strikeCount);
+					score.setText("Score: " + scoreCount);
+					if (strikeCount == 5) {
+						//setVisible(false);
+						//gameOver();
+					}
+				} else {
+					Random r = new Random();
+					int ran = r.nextInt(3);
+					if (ran == 0) {
+						status.setText("Nice!");
+					} else if (ran == 1) {
+						status.setText("Great!");
+					} else {
+						status.setText("Amazing!");
+					}
+				}
+				beat.setText("Hit!");
+				x = 220;
+
+				statusCheck.setText("Hit");
+				
+			}
+			
+		};
+//		
+//		TimerTask task = new TimerTask() {
+//
+//			@Override
+//			public void run() {
+//				beat.setText("Hit!");
+//				x = 190;
+//
+//				statusCheck.setText("Hit");
+//				
+//			}
+//			
+//		};
+		
+		TimerTask task2 = new TimerTask() {
+
+			@Override
+			public void run() {
+				if (x != 180) {
+					beat.setLocation(100,x--);
+				}
+			}
+			
+		};
+		
+		timer2 = new java.util.Timer();
+		timer2.scheduleAtFixedRate(startTask, 1000, 950);
+		//timer2.scheduleAtFixedRate(task, 5800, 300);
+		timer2.scheduleAtFixedRate(task2, 5800, 2);
+		timer2.scheduleAtFixedRate(checkHit, 5800, 416);
+		
+//		timer = new Timer(305,this);
+//		timer.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				x = 170;
+//				if (statusCheck.getText() != "") {
+//					status.setText("MISSED!");
+//					scoreCount--;
+//					strikeCount++;
+//					strike.setText("Strike:" + strikeCount);
+//					score.setText("Score: " + scoreCount);
+//					if (strikeCount == 5) {
+//						//setVisible(false);
+//						//gameOver();
+//					}
+//				} else {
+//					status.setText("Nice!");
+//				}
+//				statusCheck.setText("Hit");
+//
+//				  
+//
+//			}        
+//		});
+//		
+//		Timer t = new Timer(2, this);
+//		t.addActionListener(new ActionListener() {
+//
+//			public void actionPerformed(ActionEvent e) {
+//				if (x != 230) {
+//					beat.setLocation(200,x++);
+//				}
+//			}
+//			
+//		});
+//		t.start();
+		
+
+		
+
+		
+		Random r = new Random();
+		c = (char) (r.nextInt(26) + 'a');
+		nextC = (char) (r.nextInt(26) + 'a');
+		thirdC = (char) (r.nextInt(26) + 'a');
+		fourthC = (char) (r.nextInt(26) + 'a');
+		fifthC = (char) (r.nextInt(26) + 'a');
+
+		
+		letter = new JLabel(""+c);
+		letter.setSize(80,80);
+		letter.setLocation(110, 250);
+		letter.setForeground(Color.WHITE);
+		letter.setFont(font2);
+		letter.setHorizontalAlignment(JTextField.CENTER);
+		
+		second = new JLabel(""+nextC);
+		second.setSize(40,40);
+		second.setLocation(220, 280);
+		second.setForeground(Color.WHITE);
+		second.setFont(font1);
+		second.setHorizontalAlignment(JTextField.CENTER);
+		
+		third = new JLabel(""+thirdC);
+		third.setSize(40,40);
+		third.setLocation(280, 280);
+		third.setForeground(Color.WHITE);
+		third.setFont(font1);
+		third.setHorizontalAlignment(JTextField.CENTER);
+		
+		fourth = new JLabel(""+fourthC);
+		fourth.setSize(40,40);
+		fourth.setLocation(340, 280);
+		fourth.setForeground(Color.WHITE);
+		fourth.setFont(font1);
+		fourth.setHorizontalAlignment(JTextField.CENTER);
+		
+		fifth = new JLabel(""+fifthC);
+		fifth.setSize(40,40);
+		fifth.setLocation(400, 280);
+		fifth.setForeground(Color.WHITE);
+		fifth.setFont(font1);
+		fifth.setHorizontalAlignment(JTextField.CENTER);
+		
+		score = new JLabel("Score: "+ scoreCount);
+		score.setSize(200,40);
+		score.setLocation(50, 80);
+		score.setForeground(Color.WHITE);
+		score.setFont(font1);
+		score.setHorizontalAlignment(JTextField.CENTER);
+		
+		strike = new JLabel("Strike: "+ strikeCount);
+		strike.setSize(200,40);
+		strike.setLocation(350, 80);
+		strike.setForeground(Color.WHITE);
+		strike.setFont(font1);
+		strike.setHorizontalAlignment(JTextField.CENTER);
+		
+		JLabel divider = new JLabel("");
+		divider.setSize(100, 1);
+		divider.setLocation(100, 330);
+		divider.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+		
+		JLabel beatStrike = new JLabel("");
+		beatStrike.setSize(50, 1);
+		beatStrike.setLocation(125, 253);
+		beatStrike.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+		
+
+		add(countdown);
+		add(beat);
+		add(letter);
+		add(second);
+		add(third);
+		add(fourth);
+		add(fifth);
+		add(status);
+		add(statusCheck);
+		add(score);
+		add(strike);
+		add(divider);
+		add(beatStrike);
+		
+	
+
+		setVisible(true);
+
+		setFocusable(true);
+		requestFocus();
+		
+		this.addKeyListener(this);
+		//timer.start();
+	}
+	
+//	public void gameOver() {
+//		removeAll();
+//		player.stop();
+//		Font font1 = new Font("SansSerif", Font.BOLD, 40);
+//		gameOverField = new JTextField("Game Over");
+//		gameOverField.setEditable(false);
+//		gameOverField.setSize(300,50);
+//		gameOverField.setFont(font1);
+//		gameOverField.setBackground(Color.BLACK);
+//		gameOverField.setForeground(Color.WHITE);
+//		gameOverField.setLocation(150, 245);
+//		gameOverField.setHorizontalAlignment(JTextField.CENTER);
+//		add(gameOverField);
+//		gameOverField.setVisible(true);
+//		
+//		JButton b1 = new JButton("Play Again");
+//		b1.setSize(100,50);
+//		b1.setLocation(250, 300);
+//		add(b1);
+//		
+//		setVisible(true);
+//		
+//		b1.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				setVisible(false);
+//				titleScreen();
+//		    }          
+//		});
+//		
+//		
+//		//timer.stop();
+//	}
 
 	
 	public void setSelectDiff(int i) {
@@ -410,7 +738,24 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+
+		if (e.getKeyChar() == c) {
+			Random r = new Random();
+			c = nextC;
+			nextC = thirdC;
+			thirdC = fourthC;
+			fourthC = fifthC;
+			fifthC = (char) (r.nextInt(26) + 'a');
+			letter.setText(""+c);
+			second.setText(""+nextC);
+			third.setText(""+thirdC);
+			fourth.setText(""+fourthC);
+			fifth.setText(""+fifthC);
+			statusCheck.setText("");
+			scoreCount++;
+			score.setText("Score: " + scoreCount);
+		}
+
 		
 	}
 
