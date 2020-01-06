@@ -42,6 +42,14 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		setBackground(Color.BLACK);
 		wordOptions = getWords("medium_length.txt");
 		currentWord = new JTextField("");
+		currentWord.addActionListener(new ActionListener () {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				enterUserWord();
+			}
+			
+		});
 		titleScreen();
 	}
 	
