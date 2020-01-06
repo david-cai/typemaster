@@ -106,26 +106,30 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		JButton classicBtn = new JButton("Classic");
 		JButton endlessBtn = new JButton("Endless");
 		JButton speedBtn = new JButton("Speed Training");
+		JButton musicBtn = new JButton("Beat Typer");
 		
 		Font font1 = new Font("SansSerif", Font.PLAIN, 32);
 		Font font2 = new Font("SansSerif", Font.PLAIN, 20);
 		
 		classicBtn.setSize(100,50);
-		classicBtn.setLocation(175, 250);
+		classicBtn.setLocation(175, 200);
 		classicBtn.setFont(font2);
 		
 		endlessBtn.setSize(100,50);
-		endlessBtn.setLocation(325, 250);
+		endlessBtn.setLocation(325, 200);
 		endlessBtn.setFont(font2);
 		
-		//right now speed brings to music, create anothoer button
 		speedBtn.setSize(300,50);
-		speedBtn.setLocation(150, 325);
+		speedBtn.setLocation(150, 275);
 		speedBtn.setFont(font1);
+		
+		musicBtn.setSize(300,50);
+		musicBtn.setLocation(150, 350);
+		musicBtn.setFont(font1);
 		
 		JLabel mode = new JLabel("Choose Mode:");
 		mode.setSize(300,30);
-		mode.setLocation(150, 200);
+		mode.setLocation(150, 150);
 		mode.setForeground(Color.WHITE);
 		mode.setFont(font1);
 		mode.setHorizontalAlignment(JTextField.CENTER);
@@ -134,6 +138,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		add(classicBtn);	
 		add(endlessBtn);
 		add(speedBtn);
+		add(musicBtn);
 		setVisible(true);
 		classicBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -141,7 +146,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 				difficultySelect();
 		    }          
 		});
-		speedBtn.addActionListener(new ActionListener() {
+		musicBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				startMusic();
