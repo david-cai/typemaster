@@ -501,8 +501,8 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 					strike.setText("Strike:" + strikeCount);
 					score.setText("Score: " + scoreCount);
 					if (strikeCount == 5) {
-						setVisible(false);
-						endGame(1);
+						//setVisible(false);
+						//endGame(1); temporarily off for testing
 					}
 				} else {
 					Random r = new Random();
@@ -540,7 +540,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		timer2.scheduleAtFixedRate(startTask, 1000, 950);
 		//timer2.scheduleAtFixedRate(task, 5800, 300);
 		timer2.scheduleAtFixedRate(task2, 5800, 2);
-		timer2.scheduleAtFixedRate(checkHit, 5800, 416);
+		timer2.scheduleAtFixedRate(checkHit, 5800, 295);
 		
 		
 		Random r = new Random();
