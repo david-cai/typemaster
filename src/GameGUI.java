@@ -20,8 +20,8 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	JTextField currentString;
-	JLabel pointBox;
+	JTextField currentWord;
+	JLabel pointCount;
 	JLabel levelCount;
 	private JTextField gameOverField;
 	private int points;
@@ -34,7 +34,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	public GameGUI() throws FileNotFoundException {
 		setLayout(null);
 		setBackground(Color.BLACK);
-		currentString = new JTextField("");
+		currentWord = new JTextField("");
 		titleScreen();
 	}
 	
@@ -125,26 +125,26 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 			public void actionPerformed(ActionEvent e) {
 				setSelectDiff(0);
 				setVisible(false);
-				startNewGame();
+				startClassic();
 			}        
 		});
 		mediumBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setSelectDiff(3);
 				setVisible(false);
-				startNewGame();
+				startClassic();
 			}        
 		});
 		hardBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setSelectDiff(5);
 				setVisible(false);
-				startNewGame();
+				startClassic();
 			}        
 		});
 	}
 	
-	public void startNewGame() {
+	public void startClassic() {
 		removeAll();
 		Font font1 = new Font("SansSerif", Font.PLAIN, 16);
 		JLabel divider = new JLabel("");
@@ -159,13 +159,13 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		typeHere.setForeground(Color.WHITE);
 		//typeHere.setBackground(Color.WHITE);
 		
-		currentString.setSize(280, 30);
-		currentString.setLocation(200, 535);
-		currentString.setForeground(Color.WHITE);
-		currentString.setBackground(Color.BLACK);
-		currentString.setFont(font1);
-		currentString.setEditable(true);
-		currentString.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+		currentWord.setSize(280, 30);
+		currentWord.setLocation(200, 535);
+		currentWord.setForeground(Color.WHITE);
+		currentWord.setBackground(Color.BLACK);
+		currentWord.setFont(font1);
+		currentWord.setEditable(true);
+		currentWord.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
 		
 		JLabel score = new JLabel("Score:");
 		score.setSize(60,30);
@@ -191,11 +191,11 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		diffDisp.setHorizontalAlignment(JTextField.CENTER);
 		
 		
-		pointBox = new JLabel("0");
-		pointBox.setSize(60,30);
-		pointBox.setLocation(80, 10);
-		pointBox.setForeground(Color.WHITE);
-		pointBox.setFont(font1);
+		pointCount = new JLabel("0");
+		pointCount.setSize(60,30);
+		pointCount.setLocation(80, 10);
+		pointCount.setForeground(Color.WHITE);
+		pointCount.setFont(font1);
 		
 		JLabel level = new JLabel("Level:");
 		level.setSize(60,30);
@@ -213,10 +213,10 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 
 		
 		add(score);
-		add(pointBox);
+		add(pointCount);
 		add(divider);
 		add(typeHere);
-		add(currentString);
+		add(currentWord);
 		add(diffDisp);
 		add(level);
 		add(levelCount);
