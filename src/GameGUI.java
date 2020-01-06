@@ -291,7 +291,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		
 	}
 	
-	private void endGame() {
+	private void endGame(int game) {
 		removeAll();
 		
 		Font font1 = new Font("SansSerif", Font.BOLD, 40);
@@ -318,8 +318,13 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		    }          
 		});
 		
+		setVisible(true);
 		
-		time.stop();
+		if (game == 0) { //classic mode only
+			time.stop();
+		} else if (game == 1) {
+			player.stop();
+		}
 	}
 	
 	public void enterUserWord() {
@@ -496,8 +501,8 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 					strike.setText("Strike:" + strikeCount);
 					score.setText("Score: " + scoreCount);
 					if (strikeCount == 5) {
-						//setVisible(false);
-						//gameOver();
+						setVisible(false);
+						endGame(1);
 					}
 				} else {
 					Random r = new Random();
@@ -645,7 +650,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		currentTime++;
 		moveDown();
 		if(collision()) {
-			endGame();
+			endGame(0);
 		}
 		adjustDifficulty();
 	}
