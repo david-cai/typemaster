@@ -216,7 +216,6 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		typeHere.setLocation(100, 535);
 		typeHere.setFont(font1);
 		typeHere.setForeground(Color.WHITE);
-		//typeHere.setBackground(Color.WHITE);
 		
 		currentWord.setSize(280, 30);
 		currentWord.setLocation(200, 535);
@@ -519,19 +518,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 			}
 			
 		};
-//		
-//		TimerTask task = new TimerTask() {
-//
-//			@Override
-//			public void run() {
-//				beat.setText("Hit!");
-//				x = 190;
-//
-//				statusCheck.setText("Hit");
-//				
-//			}
-//			
-//		};
+
 		
 		TimerTask task2 = new TimerTask() {
 
@@ -550,45 +537,6 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		timer2.scheduleAtFixedRate(task2, 5800, 2);
 		timer2.scheduleAtFixedRate(checkHit, 5800, 416);
 		
-//		timer = new Timer(305,this);
-//		timer.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				x = 170;
-//				if (statusCheck.getText() != "") {
-//					status.setText("MISSED!");
-//					scoreCount--;
-//					strikeCount++;
-//					strike.setText("Strike:" + strikeCount);
-//					score.setText("Score: " + scoreCount);
-//					if (strikeCount == 5) {
-//						//setVisible(false);
-//						//gameOver();
-//					}
-//				} else {
-//					status.setText("Nice!");
-//				}
-//				statusCheck.setText("Hit");
-//
-//				  
-//
-//			}        
-//		});
-//		
-//		Timer t = new Timer(2, this);
-//		t.addActionListener(new ActionListener() {
-//
-//			public void actionPerformed(ActionEvent e) {
-//				if (x != 230) {
-//					beat.setLocation(200,x++);
-//				}
-//			}
-//			
-//		});
-//		t.start();
-		
-
-		
-
 		
 		Random r = new Random();
 		c = (char) (r.nextInt(26) + 'a');
@@ -680,41 +628,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		requestFocus();
 		
 		this.addKeyListener(this);
-		//timer.start();
 	}
-	
-//	public void gameOver() {
-//		removeAll();
-//		player.stop();
-//		Font font1 = new Font("SansSerif", Font.BOLD, 40);
-//		gameOverField = new JTextField("Game Over");
-//		gameOverField.setEditable(false);
-//		gameOverField.setSize(300,50);
-//		gameOverField.setFont(font1);
-//		gameOverField.setBackground(Color.BLACK);
-//		gameOverField.setForeground(Color.WHITE);
-//		gameOverField.setLocation(150, 245);
-//		gameOverField.setHorizontalAlignment(JTextField.CENTER);
-//		add(gameOverField);
-//		gameOverField.setVisible(true);
-//		
-//		JButton b1 = new JButton("Play Again");
-//		b1.setSize(100,50);
-//		b1.setLocation(250, 300);
-//		add(b1);
-//		
-//		setVisible(true);
-//		
-//		b1.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				setVisible(false);
-//				titleScreen();
-//		    }          
-//		});
-//		
-//		
-//		//timer.stop();
-//	}
 
 	
 	public void setSelectDiff(int i) {
