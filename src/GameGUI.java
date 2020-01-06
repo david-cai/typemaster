@@ -429,11 +429,11 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		
 		new JFXPanel();
 		//String musicFile = "./src/flight.mp3";
-//		URL fileUrl = GameGUI.class.getResource("flight.mp3");
-//		Media sound = new Media(fileUrl.toString());
-//		player = new MediaPlayer(sound);
-//		player.play();
-//		player.setVolume(.5);
+		URL fileUrl = GameGUI.class.getResource("flight.mp3");
+		Media sound = new Media(fileUrl.toString());
+		player = new MediaPlayer(sound);
+		player.play();
+		player.setVolume(.5);
 		
 		
 		Font font1 = new Font("SansSerif", Font.PLAIN, 32);
