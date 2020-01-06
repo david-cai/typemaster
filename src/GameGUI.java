@@ -5,19 +5,32 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 
 public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	
+	JTextField currentString;
+	JLabel pointBox;
+	JLabel levelCount;
 	private JTextField gameOverField;
+	private int points;
+	private Timer time;
+	private int currentTime;
+	private int difficulty;
+	private int levelCounter = 1;
+	private int selectDiff;
 	
 	public GameGUI() throws FileNotFoundException {
 		setLayout(null);
 		setBackground(Color.BLACK);
+		currentString = new JTextField("");
 		titleScreen();
 	}
 	
@@ -106,22 +119,111 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		setVisible(true);
 		easyBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//setSelectDiff(0);
-				//startNewGame();
+				setSelectDiff(0);
+				startNewGame();
 			}        
 		});
 		mediumBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//setSelectDiff(3);
-				//startNewGame();
+				setSelectDiff(3);
+				startNewGame();
 			}        
 		});
 		hardBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//setSelectDiff(5);
-				//startNewGame();
+				setSelectDiff(5);
+				startNewGame();
 			}        
 		});
+	}
+	
+	public void startNewGame() {
+		removeAll();
+		Font font1 = new Font("SansSerif", Font.PLAIN, 16);
+		JLabel divider = new JLabel("");
+		divider.setSize(600, 1);
+		divider.setLocation(0, 520);
+		divider.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+
+		JLabel typeHere = new JLabel("Type Here:");
+		typeHere.setSize(100,30);
+		typeHere.setLocation(100, 535);
+		typeHere.setFont(font1);
+		typeHere.setForeground(Color.WHITE);
+		//typeHere.setBackground(Color.WHITE);
+		
+		currentString.setSize(280, 30);
+		currentString.setLocation(200, 535);
+		currentString.setForeground(Color.WHITE);
+		currentString.setBackground(Color.BLACK);
+		currentString.setFont(font1);
+		currentString.setEditable(true);
+		currentString.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+		
+		JLabel score = new JLabel("Score:");
+		score.setSize(60,30);
+		score.setLocation(20, 10);
+		score.setFont(font1);
+		score.setForeground(Color.WHITE);
+		score.setHorizontalAlignment(JTextField.CENTER);
+		
+		String diff = "";
+		if (getSelectDiff() == 0) {
+			diff = "Easy";
+		} else if (getSelectDiff() == 3) {
+			diff = "Medium";
+		} else {
+			diff = "Hard";
+		}
+		
+		JLabel diffDisp = new JLabel("Difficulty: " + diff);
+		diffDisp.setSize(150,30);
+		diffDisp.setLocation(225, 10);
+		diffDisp.setFont(font1);
+		diffDisp.setForeground(Color.WHITE);
+		diffDisp.setHorizontalAlignment(JTextField.CENTER);
+		
+		
+		pointBox = new JLabel("0");
+		pointBox.setSize(60,30);
+		pointBox.setLocation(80, 10);
+		pointBox.setForeground(Color.WHITE);
+		pointBox.setFont(font1);
+		
+		JLabel level = new JLabel("Level:");
+		level.setSize(60,30);
+		level.setForeground(Color.WHITE);
+		level.setLocation(510, 10);
+		level.setFont(font1);
+		
+		
+		levelCount = new JLabel("");
+		levelCount.setSize(10,30);
+		levelCount.setLocation(560, 10);
+		levelCount.setText(""+levelCounter);
+		levelCount.setForeground(Color.WHITE);
+		levelCount.setFont(font1);
+
+		
+		add(score);
+		add(pointBox);
+		add(divider);
+		add(typeHere);
+		add(currentString);
+		add(diffDisp);
+		add(level);
+		add(levelCount);
+		setVisible(true);
+		time = new Timer(100, this);
+		time.setInitialDelay(0);
+
+		
+		points = 0;
+		currentTime = 0;
+		difficulty = 210;
+
+		time.start();
+		
 	}
 	
 	private void endGame() {
@@ -152,7 +254,15 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		});
 		
 		
-		//time.stop();
+		time.stop();
+	}
+	
+	public void setSelectDiff(int i) {
+		this.selectDiff = i;
+	}
+	
+	public int getSelectDiff() {
+		return selectDiff;
 	}
 	
 
