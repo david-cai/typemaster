@@ -16,6 +16,10 @@ import javax.swing.Timer;
 
 public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JTextField currentString;
 	JLabel pointBox;
 	JLabel levelCount;
@@ -120,18 +124,21 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		easyBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setSelectDiff(0);
+				setVisible(false);
 				startNewGame();
 			}        
 		});
 		mediumBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setSelectDiff(3);
+				setVisible(false);
 				startNewGame();
 			}        
 		});
 		hardBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setSelectDiff(5);
+				setVisible(false);
 				startNewGame();
 			}        
 		});
@@ -221,7 +228,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		points = 0;
 		currentTime = 0;
 		difficulty = 210;
-
+		
 		time.start();
 		
 	}
