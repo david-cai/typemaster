@@ -177,7 +177,6 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 				startMusic();
 		    }          
 		});
-		//need to add functionality for other 2
 		
 	}
 	
@@ -294,6 +293,20 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		levelCount.setForeground(Color.WHITE);
 		levelCount.setFont(font1);
 
+		JButton exitBtn = new JButton("Exit");
+		exitBtn.setSize(50,35);
+		exitBtn.setLocation(515, 35);
+		exitBtn.setFont(font1);
+		
+		exitBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				endGame(0);
+				setVisible(false);
+				titleScreen();
+		    }          
+		});
+		
+		
 		
 		add(score);
 		add(pointCount);
@@ -303,6 +316,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		add(diffDisp);
 		add(level);
 		add(levelCount);
+		add(exitBtn);
 		setVisible(true);
 		time = new javax.swing.Timer(100, this);
 		time.setInitialDelay(0);
