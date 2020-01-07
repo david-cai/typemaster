@@ -88,10 +88,25 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	
 	public void titleScreen() {
 		removeAll();
+		
+		Font font1 = new Font("SansSerif", Font.PLAIN, 32);
+		Font font2 = new Font("SansSerif", Font.PLAIN, 20);
+		
+		JLabel title = new JLabel("Welcome to Typemaster");
+		title.setSize(500,50);
+		title.setLocation(50, 200);
+		title.setFont(font1);
+		title.setForeground(Color.WHITE);
+		title.setHorizontalAlignment(JTextField.CENTER);
+		
 		JButton startBtn = new JButton("Start");
-		startBtn.setSize(100,50);
-		startBtn.setLocation(250, 275);
+		startBtn.setSize(80,50);
+		startBtn.setLocation(260, 275);
+		startBtn.setFont(font2);
+		
+		add(title);
 		add(startBtn);
+		
 		setVisible(true);
 		startBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
