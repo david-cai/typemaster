@@ -46,6 +46,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	private int selectDiff;
 	private ArrayList<Word> wordsInGame;
 	private ArrayList<String> wordOptions;
+	private int modeSelect;
 	
 	private char c;
 	private char nextC;
@@ -142,10 +143,19 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		setVisible(true);
 		classicBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				modeSelect = 0;
 				setVisible(false);
 				difficultySelect();
 		    }          
 		});
+		endlessBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modeSelect = 1;
+				setVisible(false);
+				difficultySelect();
+		    }          
+		});
+		
 		musicBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
@@ -364,7 +374,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	private void makeNewWord() {
 			String randomWord = getRandomWord();
 			Random r = new Random();
-			int randNum = r.nextInt(5) + levelCounter + getSelectDiff();
+			int randNum = r.nextInt(5) + levelCounter + getSelectDiff() + 1;
 			Word newWord = new Word(randomWord, randNum, this);
 			wordsInGame.add(newWord);
 	}
@@ -403,11 +413,11 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 			difficulty--;
 			int diffMod;
 			if (getSelectDiff() == 0) {
-				diffMod = 30;
-			} else if (getSelectDiff() == 1) {
 				diffMod = 25;
-			} else {
+			} else if (getSelectDiff() == 1) {
 				diffMod = 20;
+			} else {
+				diffMod = 15;
 			}
 			if (difficulty % diffMod == 0) {
 				levelCounter++;
@@ -649,7 +659,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		currentTime++;
 		moveDown();
-		if(collision()) {
+		if(collision() && modeSelect == 0) {
 			endGame(0);
 		}
 		adjustDifficulty();
