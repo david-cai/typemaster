@@ -110,15 +110,15 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		JButton musicBtn = new JButton("Beat Typer");
 		
 		Font font1 = new Font("SansSerif", Font.PLAIN, 32);
-		Font font2 = new Font("SansSerif", Font.PLAIN, 20);
+		//Font font2 = new Font("SansSerif", Font.PLAIN, 20);
 		
-		classicBtn.setSize(100,50);
-		classicBtn.setLocation(175, 200);
-		classicBtn.setFont(font2);
+		classicBtn.setSize(140,50);
+		classicBtn.setLocation(150, 200);
+		classicBtn.setFont(font1);
 		
-		endlessBtn.setSize(100,50);
-		endlessBtn.setLocation(325, 200);
-		endlessBtn.setFont(font2);
+		endlessBtn.setSize(140,50);
+		endlessBtn.setLocation(310, 200);
+		endlessBtn.setFont(font1);
 		
 		speedBtn.setSize(300,50);
 		speedBtn.setLocation(150, 275);
