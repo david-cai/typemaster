@@ -38,8 +38,12 @@ public class Word extends JFrame {
 	public void createWordField() {
 		Font font1 = new Font("SansSerif", Font.PLAIN, 16);
 		wordField = new JTextField(chosenWord);
-		wordField.setLocation(xVal, yVal);
-		wordField.setBackground(Color.GREEN);
+		if (fallSpeed == 0) {
+			wordField.setLocation(200, 200);
+		} else {
+			wordField.setLocation(xVal, yVal);
+			wordField.setBackground(Color.GREEN);
+		}
 		wordField.setSize(7 * chosenWord.length() + 50, 50);
 		wordField.setFont(font1);
 		wordField.setHorizontalAlignment(JTextField.CENTER);

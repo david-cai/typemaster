@@ -69,6 +69,8 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	private int strikeCount = 0;
 	private int x = 150;
 	private int startCount = 5;
+	private int timeLeft = 120;
+
 	
 	public GameGUI() throws FileNotFoundException {
 		setLayout(null);
@@ -79,7 +81,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				enterUserWord();
+				enterUserWord(modeSelect);
 			}
 			
 		});
@@ -170,7 +172,13 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 				difficultySelect();
 		    }          
 		});
-		
+		speedBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modeSelect = 2;
+				setVisible(false);
+				startTraining();
+		    }          
+		});
 		musicBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
@@ -366,14 +374,17 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		}
 	}
 	
-	public void enterUserWord() {
+	public void enterUserWord(int modeSelect) {
 		String userInput = currentWord.getText();
 		currentWord.setText("");
-		if(wordIsInGame(userInput)) {
+		if (wordIsInGame(userInput)) {
 			points = points + userInput.length();
 			pointCount.setText(""+points);
 			removeWord(userInput);
 			updateUI();
+			if (modeSelect == 2) {
+				makeNewWord(0);
+			}
 		}
 	}
 	
@@ -400,12 +411,19 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	}
 	
 
-	private void makeNewWord() {
+	private void makeNewWord(int mode) {
 			String randomWord = getRandomWord();
-			Random r = new Random();
-			int randNum = r.nextInt(5) + levelCounter + getSelectDiff() + 1;
-			Word newWord = new Word(randomWord, randNum, this);
-			wordsInGame.add(newWord);
+			Word newWord;
+			if (mode == 0) {
+				newWord = new Word(randomWord, 0, this);
+			} else {
+				Random r = new Random();
+				int randNum = r.nextInt(5) + levelCounter + getSelectDiff() + 1;
+				newWord = new Word(randomWord, randNum, this);
+			}
+			if (newWord != null) {
+				wordsInGame.add(newWord);
+			}
 	}
 	
 	private String getRandomWord() {
@@ -452,7 +470,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 				levelCounter++;
 				levelCount.setText(""+levelCounter);
 			}
-			makeNewWord();
+			makeNewWord(1);
 			
 		}
 	}
@@ -468,6 +486,76 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
         }
         input.close();
         return wordOptions;
+    }
+    
+    ///////Speed training mode
+    public void startTraining() {
+    	removeAll();
+    	Font font1 = new Font("SansSerif", Font.PLAIN, 16);
+		JLabel divider = new JLabel("");
+		divider.setSize(600, 1);
+		divider.setLocation(0, 520);
+		divider.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+
+		JLabel typeHere = new JLabel("Type Here:");
+		typeHere.setSize(100,30);
+		typeHere.setLocation(100, 535);
+		typeHere.setFont(font1);
+		typeHere.setForeground(Color.WHITE);
+		
+		currentWord.setSize(280, 30);
+		currentWord.setLocation(200, 535);
+		currentWord.setForeground(Color.WHITE);
+		currentWord.setBackground(Color.BLACK);
+		currentWord.setFont(font1);
+		currentWord.setEditable(true);
+		currentWord.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+		
+		
+		JLabel score = new JLabel("Score:");
+		score.setSize(60,30);
+		score.setLocation(20, 10);
+		score.setFont(font1);
+		score.setForeground(Color.WHITE);
+		score.setHorizontalAlignment(JTextField.CENTER);
+		
+		pointCount = new JLabel("0");
+		pointCount.setSize(60,30);
+		pointCount.setLocation(80, 10);
+		pointCount.setForeground(Color.WHITE);
+		pointCount.setFont(font1);
+		
+		JLabel timeCount = new JLabel("Time: " + timeLeft);
+		timeCount.setSize(60,30);
+		timeCount.setLocation(510, 10);
+		timeCount.setForeground(Color.WHITE);
+		timeCount.setFont(font1);
+
+		JButton exitBtn = new JButton("Exit");
+		exitBtn.setSize(50,35);
+		exitBtn.setLocation(515, 35);
+		exitBtn.setFont(font1);
+		
+		exitBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				endGame(0);
+				setVisible(false);
+				titleScreen();
+		    }          
+		});
+		
+		
+		
+		add(score);
+		add(pointCount);
+		add(divider);
+		add(typeHere);
+		add(timeCount);
+		add(currentWord);
+		add(exitBtn);
+		wordsInGame = new ArrayList<Word>();
+		makeNewWord(0);
+		setVisible(true);
     }
     
     ///////Music Mode (maybe separate to diff class)
