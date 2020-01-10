@@ -40,6 +40,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	private int points;
 	private javax.swing.Timer time;
 	private java.util.Timer timer2;
+	private java.util.Timer timer3;
 	private int currentTime;
 	private int difficulty;
 	private int levelCounter = 1;
@@ -69,7 +70,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	private int strikeCount = 0;
 	private int x = 150;
 	private int startCount = 5;
-	private int timeLeft = 120;
+	private int timeLeft = 61;
 
 	
 	public GameGUI() throws FileNotFoundException {
@@ -342,7 +343,11 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		removeAll();
 		
 		Font font1 = new Font("SansSerif", Font.BOLD, 40);
-		gameOverField = new JTextField("Game Over");
+		if (game == 2) {
+			gameOverField = new JTextField("Run Complete");
+		} else {
+			gameOverField = new JTextField("Game Over");
+		}
 		gameOverField.setEditable(false);
 		gameOverField.setSize(300,50);
 		gameOverField.setFont(font1);
@@ -526,8 +531,8 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		pointCount.setFont(font1);
 		
 		JLabel timeCount = new JLabel("Time: " + timeLeft);
-		timeCount.setSize(60,30);
-		timeCount.setLocation(510, 10);
+		timeCount.setSize(80,30);
+		timeCount.setLocation(505, 10);
 		timeCount.setForeground(Color.WHITE);
 		timeCount.setFont(font1);
 
@@ -555,6 +560,26 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		add(exitBtn);
 		wordsInGame = new ArrayList<Word>();
 		makeNewWord(0);
+		
+		TimerTask timeCountdown = new TimerTask() {
+
+			@Override
+			public void run() {
+				if (timeLeft > 0) {
+					timeLeft--;
+					timeCount.setText("Time: " + timeLeft);
+				} else {
+					timer3.cancel();
+					setVisible(false);
+					endGame(2);
+				}
+			}
+			
+		};
+		
+		timer3 = new java.util.Timer();
+		timer3.scheduleAtFixedRate(timeCountdown, 0, 1000);
+		
 		setVisible(true);
     }
     

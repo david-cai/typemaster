@@ -37,15 +37,19 @@ public class Word extends JFrame {
 	
 	public void createWordField() {
 		Font font1 = new Font("SansSerif", Font.PLAIN, 16);
+		Font font2 = new Font("SansSerif", Font.PLAIN, 48);
 		wordField = new JTextField(chosenWord);
 		if (fallSpeed == 0) {
-			wordField.setLocation(200, 200);
+			wordField.setLocation(125, 230);
+			wordField.setSize(350, 80);
+			wordField.setFont(font2);
 		} else {
 			wordField.setLocation(xVal, yVal);
 			wordField.setBackground(Color.GREEN);
+			wordField.setSize(7 * chosenWord.length() + 50, 50);
+			wordField.setFont(font1);
 		}
-		wordField.setSize(7 * chosenWord.length() + 50, 50);
-		wordField.setFont(font1);
+		
 		wordField.setHorizontalAlignment(JTextField.CENTER);
 		frame.add(wordField);
 	}
