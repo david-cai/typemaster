@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.TimerTask;
@@ -47,6 +48,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	private int selectDiff;
 	private ArrayList<Word> wordsInGame;
 	private ArrayList<String> wordOptions;
+	private ArrayList<Integer> classicHighScores;
 	private int modeSelect;
 	
 	private char c;
@@ -77,6 +79,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		setLayout(null);
 		setBackground(Color.BLACK);
 		wordOptions = getWords("medium_length.txt");
+		classicHighScores = getScores("classicHighScores.txt");
 		currentWord = new JTextField("");
 		currentWord.addActionListener(new ActionListener () {
 
@@ -234,6 +237,71 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 				startClassic();
 			}        
 		});
+	}
+	
+	public void showHighScores() {
+		removeAll();
+		
+		Font font1 = new Font("SansSerif", Font.PLAIN, 32);
+		
+		JLabel scoreTitle = new JLabel("High Scores:");
+		scoreTitle.setSize(200,80);
+		scoreTitle.setLocation(200, 50);
+		scoreTitle.setFont(font1);
+		scoreTitle.setForeground(Color.WHITE);
+		
+		JLabel scoreOne = new JLabel("1: " + classicHighScores.get(0));
+		scoreOne.setSize(200,30);
+		scoreOne.setLocation(250, 125);
+		scoreOne.setFont(font1);
+		scoreOne.setForeground(Color.WHITE);
+		
+		JLabel scoreTwo = new JLabel("2: " + classicHighScores.get(1));
+		scoreTwo.setSize(200,30);
+		scoreTwo.setLocation(250, 175);
+		scoreTwo.setFont(font1);
+		scoreTwo.setForeground(Color.WHITE);
+		
+		JLabel scoreThree = new JLabel("3: " + classicHighScores.get(2));
+		scoreThree.setSize(200,30);
+		scoreThree.setLocation(250, 225);
+		scoreThree.setFont(font1);
+		scoreThree.setForeground(Color.WHITE);
+		
+		JLabel scoreFour = new JLabel("4: " + classicHighScores.get(3));
+		scoreFour.setSize(200,30);
+		scoreFour.setLocation(250, 275);
+		scoreFour.setFont(font1);
+		scoreFour.setForeground(Color.WHITE);
+		
+		JLabel scoreFive = new JLabel("5: " + classicHighScores.get(4));
+		scoreFive.setSize(200,30);
+		scoreFive.setLocation(250, 325);
+		scoreFive.setFont(font1);
+		scoreFive.setForeground(Color.WHITE);
+		
+		JButton nextBtn = new JButton("Continue");
+		nextBtn.setSize(250,50);
+		nextBtn.setLocation(175, 375);
+		nextBtn.setFont(font1);
+		
+		nextBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				endGame(0);
+		    }          
+		});
+		
+		
+		add(scoreTitle);
+		add(scoreOne);
+		add(scoreTwo);
+		add(scoreThree);
+		add(scoreFour);
+		add(scoreFive);
+		add(nextBtn);
+		setVisible(true);
+		
 	}
 	
 	public void startClassic() {
@@ -491,6 +559,20 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
         }
         input.close();
         return wordOptions;
+    }
+    
+    public static ArrayList<Integer> getScores(String inputFile) throws FileNotFoundException {
+        
+    	File f = new File(inputFile);
+        Scanner input =  new Scanner(f);
+       
+        ArrayList<Integer> highScores = new ArrayList<Integer>();
+        while(input.hasNextInt()) {
+        	highScores.add(input.nextInt());
+        }
+        input.close();
+        Collections.sort(highScores, Collections.reverseOrder());
+        return highScores;
     }
     
     ///////Speed training mode
@@ -802,7 +884,10 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		currentTime++;
 		moveDown();
 		if(collision() && modeSelect == 0) {
+			removeAll();
 			endGame(0);
+			setVisible(false);
+			showHighScores();
 		}
 		adjustDifficulty();
 	}
