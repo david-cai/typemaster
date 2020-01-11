@@ -671,10 +671,8 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 			public void run() {
 				if (statusCheck.getText() != "") {
 					status.setText("MISSED!");
-					scoreCount = scoreCount - 5;
 					strikeCount++;
 					strike.setText("Strike:" + strikeCount);
-					score.setText("Score: " + scoreCount);
 					if (strikeCount == 3) {
 						setVisible(false);
 						endGame(1);
