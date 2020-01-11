@@ -6,6 +6,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -406,10 +409,10 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		time.start();
 		
 	}
-	
+
 	private void endGame(int game) {
 		removeAll();
-		
+
 		Font font1 = new Font("SansSerif", Font.BOLD, 40);
 		if (game == 2) {
 			gameOverField = new JTextField("Run Complete");
@@ -548,7 +551,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		}
 	}
 	
-    public static ArrayList<String> getWords(String inputFile) throws FileNotFoundException {
+    public ArrayList<String> getWords(String inputFile) throws FileNotFoundException {
         
     	File f = new File(inputFile);
         Scanner input =  new Scanner(f);
@@ -561,7 +564,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
         return wordOptions;
     }
     
-    public static ArrayList<Integer> getScores(String inputFile) throws FileNotFoundException {
+    public ArrayList<Integer> getScores(String inputFile) throws FileNotFoundException {
         
     	File f = new File(inputFile);
         Scanner input =  new Scanner(f);
@@ -574,6 +577,21 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
         Collections.sort(highScores, Collections.reverseOrder());
         return highScores;
     }
+    
+    public void updateScores(String inputFile) throws IOException  {
+    	if (points > classicHighScores.get(4)) { //last score is lowest score
+    		classicHighScores.set(4, points);
+    	}
+    	Collections.sort(classicHighScores, Collections.reverseOrder()); //only necessary for when original list has fewer than 5 scores
+    	FileWriter fw = new FileWriter(inputFile);
+    	PrintWriter pw = new PrintWriter(fw);
+    	for (int i = 0; i < classicHighScores.size(); i++) {
+    		pw.println(classicHighScores.get(i));
+    	};
+        pw.close();
+    }
+    
+    
     
     ///////Speed training mode
     public void startTraining() {
@@ -887,6 +905,12 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 			removeAll();
 			endGame(0);
 			setVisible(false);
+			try {
+				updateScores("classicHighScores.txt");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			showHighScores();
 		}
 		adjustDifficulty();
