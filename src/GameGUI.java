@@ -439,7 +439,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 				newWord = new Word(randomWord, 0, this);
 			} else {
 				Random r = new Random();
-				int randNum = r.nextInt(5) + levelCounter + getSelectDiff() + 1;
+				int randNum = r.nextInt(3) + levelCounter + (getSelectDiff() * 2);
 				newWord = new Word(randomWord, randNum, this);
 			}
 			if (newWord != null) {
@@ -483,9 +483,9 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 			if (getSelectDiff() == 0) {
 				diffMod = 25;
 			} else if (getSelectDiff() == 3) {
-				diffMod = 20;
-			} else {
 				diffMod = 15;
+			} else {
+				diffMod = 5;
 			}
 			if (difficulty % diffMod == 0) {
 				levelCounter++;
