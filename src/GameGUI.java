@@ -552,18 +552,19 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		timeCount.setForeground(Color.WHITE);
 		timeCount.setFont(font1);
 
-		JButton exitBtn = new JButton("Exit");
-		exitBtn.setSize(50,35);
-		exitBtn.setLocation(515, 35);
-		exitBtn.setFont(font1);
-		
-		exitBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				endGame(0);
-				setVisible(false);
-				titleScreen();
-		    }          
-		});
+// exit not needed for this mode i think
+//		JButton exitBtn = new JButton("Exit");
+//		exitBtn.setSize(50,35);
+//		exitBtn.setLocation(515, 35);
+//		exitBtn.setFont(font1);
+//		
+//		exitBtn.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				endGame(0);
+//				setVisible(false);
+//				titleScreen();
+//		    }          
+//		});
 		
 		
 		
@@ -573,7 +574,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		add(typeHere);
 		add(timeCount);
 		add(currentWord);
-		add(exitBtn);
+		//add(exitBtn);
 		wordsInGame = new ArrayList<Word>();
 		makeNewWord(0);
 		
