@@ -384,6 +384,11 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		if (game == 0) { //classic mode only
 			time.stop();
 		} else if (game == 1) {
+			startCount = 5;
+			scoreCount = 0;
+			strike.setText("Strike:" + strikeCount);
+			score.setText("Score: " + scoreCount);
+			timer2.cancel();
 			player.stop();
 		}
 	}
@@ -666,15 +671,17 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 			public void run() {
 				if (statusCheck.getText() != "") {
 					status.setText("MISSED!");
-					scoreCount--;
+					scoreCount = scoreCount - 5;
 					strikeCount++;
 					strike.setText("Strike:" + strikeCount);
 					score.setText("Score: " + scoreCount);
-					if (strikeCount == 5) {
-						//setVisible(false);
-						//endGame(1); temporarily off for testing
+					if (strikeCount == 3) {
+						setVisible(false);
+						endGame(1);
 					}
 				} else {
+					strikeCount = 0;
+					strike.setText("Strike:" + strikeCount);
 					Random r = new Random();
 					int ran = r.nextInt(3);
 					if (ran == 0) {
