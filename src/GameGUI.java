@@ -52,6 +52,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	private ArrayList<Word> wordsInGame;
 	private ArrayList<String> wordOptions;
 	private ArrayList<Integer> classicHighScores;
+	private ArrayList<Integer> musicHighScores;
 	private int modeSelect;
 	
 	private char c;
@@ -76,6 +77,13 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	private int x = 150;
 	private int startCount = 5;
 	private int timeLeft = 61;
+	
+	private JLabel scoreOne;
+	private JLabel scoreTwo;
+	private JLabel scoreThree;
+	private JLabel scoreFour;
+	private JLabel scoreFive;
+	
 
 	
 	public GameGUI() throws FileNotFoundException {
@@ -83,6 +91,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		setBackground(Color.BLACK);
 		wordOptions = getWords("medium_length.txt");
 		classicHighScores = getScores("classicHighScores.txt");
+		musicHighScores = getScores("musicHighScores.txt");
 		currentWord = new JTextField("");
 		currentWord.addActionListener(new ActionListener () {
 
@@ -188,6 +197,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		});
 		musicBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				modeSelect = 3;
 				setVisible(false);
 				startMusic();
 		    }          
@@ -386,6 +396,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		} else if (game == 1) {
 			startCount = 5;
 			scoreCount = 0;
+			strikeCount = 0;
 			strike.setText("Strike:" + strikeCount);
 			score.setText("Score: " + scoreCount);
 			timer2.cancel();
@@ -675,7 +686,13 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 					strike.setText("Strike:" + strikeCount);
 					if (strikeCount == 3) {
 						setVisible(false);
-						endGame(1);
+						try {
+							updateScores("musicHighScores.txt");
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						showHighScores();
 					}
 				} else {
 					strikeCount = 0;
@@ -826,37 +843,51 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		
 		Font font1 = new Font("SansSerif", Font.PLAIN, 32);
 		
+		if (modeSelect == 0) {
+			scoreOne = new JLabel("1: " + classicHighScores.get(0));
+			scoreTwo = new JLabel("2: " + classicHighScores.get(1));
+			scoreThree = new JLabel("3: " + classicHighScores.get(2));
+			scoreFour = new JLabel("4: " + classicHighScores.get(3));
+			scoreFive = new JLabel("5: " + classicHighScores.get(4));
+		} else if (modeSelect == 3) {
+			scoreOne = new JLabel("1: " + musicHighScores.get(0));
+			scoreTwo = new JLabel("2: " + musicHighScores.get(1));
+			scoreThree = new JLabel("3: " + musicHighScores.get(2));
+			scoreFour = new JLabel("4: " + musicHighScores.get(3));
+			scoreFive = new JLabel("5: " + musicHighScores.get(4));
+		}
+		
 		JLabel scoreTitle = new JLabel("High Scores:");
 		scoreTitle.setSize(200,80);
 		scoreTitle.setLocation(200, 50);
 		scoreTitle.setFont(font1);
 		scoreTitle.setForeground(Color.WHITE);
 		
-		JLabel scoreOne = new JLabel("1: " + classicHighScores.get(0));
+		
 		scoreOne.setSize(200,30);
 		scoreOne.setLocation(250, 125);
 		scoreOne.setFont(font1);
 		scoreOne.setForeground(Color.WHITE);
 		
-		JLabel scoreTwo = new JLabel("2: " + classicHighScores.get(1));
+		
 		scoreTwo.setSize(200,30);
 		scoreTwo.setLocation(250, 175);
 		scoreTwo.setFont(font1);
 		scoreTwo.setForeground(Color.WHITE);
 		
-		JLabel scoreThree = new JLabel("3: " + classicHighScores.get(2));
+		
 		scoreThree.setSize(200,30);
 		scoreThree.setLocation(250, 225);
 		scoreThree.setFont(font1);
 		scoreThree.setForeground(Color.WHITE);
 		
-		JLabel scoreFour = new JLabel("4: " + classicHighScores.get(3));
+		
 		scoreFour.setSize(200,30);
 		scoreFour.setLocation(250, 275);
 		scoreFour.setFont(font1);
 		scoreFour.setForeground(Color.WHITE);
 		
-		JLabel scoreFive = new JLabel("5: " + classicHighScores.get(4));
+		
 		scoreFive.setSize(200,30);
 		scoreFive.setLocation(250, 325);
 		scoreFive.setFont(font1);
@@ -870,7 +901,11 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		nextBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				endGame(0);
+				if (modeSelect == 0) {
+					endGame(0);
+				} else if (modeSelect == 3) {
+					endGame(1);
+				}
 		    }          
 		});
 		
@@ -899,16 +934,30 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
     }
     
     public void updateScores(String inputFile) throws IOException  {
-    	if (points > classicHighScores.get(4)) { //last score is lowest score
-    		classicHighScores.set(4, points);
+    	if (modeSelect == 0) {
+	    	if (points > classicHighScores.get(4)) { //last score is lowest score
+	    		classicHighScores.set(4, points);
+	    		Collections.sort(classicHighScores, Collections.reverseOrder()); //only necessary for when original list has fewer than 5 scores
+	        	FileWriter fw = new FileWriter(inputFile);
+	        	PrintWriter pw = new PrintWriter(fw);
+	        	for (int i = 0; i < classicHighScores.size(); i++) {
+	        		pw.println(classicHighScores.get(i));
+	        	};
+	            pw.close();
+	    	}
+    	} else if (modeSelect == 3) {
+	    	if (scoreCount > musicHighScores.get(4)) { //last score is lowest score
+	    		musicHighScores.set(4, scoreCount);
+	    		Collections.sort(musicHighScores, Collections.reverseOrder()); //only necessary for when original list has fewer than 5 scores
+	        	FileWriter fw = new FileWriter(inputFile);
+	        	PrintWriter pw = new PrintWriter(fw);
+	        	for (int i = 0; i < musicHighScores.size(); i++) {
+	        		pw.println(musicHighScores.get(i));
+	        	};
+	            pw.close();
+	    	}
     	}
-    	Collections.sort(classicHighScores, Collections.reverseOrder()); //only necessary for when original list has fewer than 5 scores
-    	FileWriter fw = new FileWriter(inputFile);
-    	PrintWriter pw = new PrintWriter(fw);
-    	for (int i = 0; i < classicHighScores.size(); i++) {
-    		pw.println(classicHighScores.get(i));
-    	};
-        pw.close();
+    	
     }
 	
 
