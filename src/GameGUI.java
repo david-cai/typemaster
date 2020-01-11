@@ -242,70 +242,8 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		});
 	}
 	
-	public void showHighScores() {
-		removeAll();
-		
-		Font font1 = new Font("SansSerif", Font.PLAIN, 32);
-		
-		JLabel scoreTitle = new JLabel("High Scores:");
-		scoreTitle.setSize(200,80);
-		scoreTitle.setLocation(200, 50);
-		scoreTitle.setFont(font1);
-		scoreTitle.setForeground(Color.WHITE);
-		
-		JLabel scoreOne = new JLabel("1: " + classicHighScores.get(0));
-		scoreOne.setSize(200,30);
-		scoreOne.setLocation(250, 125);
-		scoreOne.setFont(font1);
-		scoreOne.setForeground(Color.WHITE);
-		
-		JLabel scoreTwo = new JLabel("2: " + classicHighScores.get(1));
-		scoreTwo.setSize(200,30);
-		scoreTwo.setLocation(250, 175);
-		scoreTwo.setFont(font1);
-		scoreTwo.setForeground(Color.WHITE);
-		
-		JLabel scoreThree = new JLabel("3: " + classicHighScores.get(2));
-		scoreThree.setSize(200,30);
-		scoreThree.setLocation(250, 225);
-		scoreThree.setFont(font1);
-		scoreThree.setForeground(Color.WHITE);
-		
-		JLabel scoreFour = new JLabel("4: " + classicHighScores.get(3));
-		scoreFour.setSize(200,30);
-		scoreFour.setLocation(250, 275);
-		scoreFour.setFont(font1);
-		scoreFour.setForeground(Color.WHITE);
-		
-		JLabel scoreFive = new JLabel("5: " + classicHighScores.get(4));
-		scoreFive.setSize(200,30);
-		scoreFive.setLocation(250, 325);
-		scoreFive.setFont(font1);
-		scoreFive.setForeground(Color.WHITE);
-		
-		JButton nextBtn = new JButton("Continue");
-		nextBtn.setSize(250,50);
-		nextBtn.setLocation(175, 375);
-		nextBtn.setFont(font1);
-		
-		nextBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-				endGame(0);
-		    }          
-		});
-		
-		
-		add(scoreTitle);
-		add(scoreOne);
-		add(scoreTwo);
-		add(scoreThree);
-		add(scoreFour);
-		add(scoreFive);
-		add(nextBtn);
-		setVisible(true);
-		
-	}
+	
+
 	
 	public void startClassic() {
 		removeAll();
@@ -387,7 +325,6 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		});
 		
 		
-		
 		add(score);
 		add(pointCount);
 		add(divider);
@@ -454,7 +391,15 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		String userInput = currentWord.getText();
 		currentWord.setText("");
 		if (wordIsInGame(userInput)) {
-			points = points + userInput.length();
+			int addPts = 0;
+			if (getSelectDiff() == 0) { //easy
+				addPts = (userInput.length() * 1);
+			} else if (getSelectDiff() == 3) { //medium
+				addPts = (userInput.length() * 2);
+			} else { //hard
+				addPts = (userInput.length() * 3);
+			}
+			points = points + addPts;
 			pointCount.setText(""+points);
 			removeWord(userInput);
 			updateUI();
@@ -537,7 +482,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 			int diffMod;
 			if (getSelectDiff() == 0) {
 				diffMod = 25;
-			} else if (getSelectDiff() == 1) {
+			} else if (getSelectDiff() == 3) {
 				diffMod = 20;
 			} else {
 				diffMod = 15;
@@ -563,36 +508,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
         input.close();
         return wordOptions;
     }
-    
-    public ArrayList<Integer> getScores(String inputFile) throws FileNotFoundException {
-        
-    	File f = new File(inputFile);
-        Scanner input =  new Scanner(f);
        
-        ArrayList<Integer> highScores = new ArrayList<Integer>();
-        while(input.hasNextInt()) {
-        	highScores.add(input.nextInt());
-        }
-        input.close();
-        Collections.sort(highScores, Collections.reverseOrder());
-        return highScores;
-    }
-    
-    public void updateScores(String inputFile) throws IOException  {
-    	if (points > classicHighScores.get(4)) { //last score is lowest score
-    		classicHighScores.set(4, points);
-    	}
-    	Collections.sort(classicHighScores, Collections.reverseOrder()); //only necessary for when original list has fewer than 5 scores
-    	FileWriter fw = new FileWriter(inputFile);
-    	PrintWriter pw = new PrintWriter(fw);
-    	for (int i = 0; i < classicHighScores.size(); i++) {
-    		pw.println(classicHighScores.get(i));
-    	};
-        pw.close();
-    }
-    
-    
-    
     ///////Speed training mode
     public void startTraining() {
     	removeAll();
@@ -895,6 +811,98 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	public int getSelectDiff() {
 		return selectDiff;
 	}
+	
+	//High Score calcs for classic, training, and rhythm modes
+	
+	public void showHighScores() {
+		removeAll();
+		
+		Font font1 = new Font("SansSerif", Font.PLAIN, 32);
+		
+		JLabel scoreTitle = new JLabel("High Scores:");
+		scoreTitle.setSize(200,80);
+		scoreTitle.setLocation(200, 50);
+		scoreTitle.setFont(font1);
+		scoreTitle.setForeground(Color.WHITE);
+		
+		JLabel scoreOne = new JLabel("1: " + classicHighScores.get(0));
+		scoreOne.setSize(200,30);
+		scoreOne.setLocation(250, 125);
+		scoreOne.setFont(font1);
+		scoreOne.setForeground(Color.WHITE);
+		
+		JLabel scoreTwo = new JLabel("2: " + classicHighScores.get(1));
+		scoreTwo.setSize(200,30);
+		scoreTwo.setLocation(250, 175);
+		scoreTwo.setFont(font1);
+		scoreTwo.setForeground(Color.WHITE);
+		
+		JLabel scoreThree = new JLabel("3: " + classicHighScores.get(2));
+		scoreThree.setSize(200,30);
+		scoreThree.setLocation(250, 225);
+		scoreThree.setFont(font1);
+		scoreThree.setForeground(Color.WHITE);
+		
+		JLabel scoreFour = new JLabel("4: " + classicHighScores.get(3));
+		scoreFour.setSize(200,30);
+		scoreFour.setLocation(250, 275);
+		scoreFour.setFont(font1);
+		scoreFour.setForeground(Color.WHITE);
+		
+		JLabel scoreFive = new JLabel("5: " + classicHighScores.get(4));
+		scoreFive.setSize(200,30);
+		scoreFive.setLocation(250, 325);
+		scoreFive.setFont(font1);
+		scoreFive.setForeground(Color.WHITE);
+		
+		JButton nextBtn = new JButton("Continue");
+		nextBtn.setSize(250,50);
+		nextBtn.setLocation(175, 375);
+		nextBtn.setFont(font1);
+		
+		nextBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				endGame(0);
+		    }          
+		});
+		
+		add(scoreTitle);
+		add(scoreOne);
+		add(scoreTwo);
+		add(scoreThree);
+		add(scoreFour);
+		add(scoreFive);
+		add(nextBtn);
+		setVisible(true);
+	}
+	
+    public ArrayList<Integer> getScores(String inputFile) throws FileNotFoundException {
+        
+    	File f = new File(inputFile);
+        Scanner input =  new Scanner(f);
+       
+        ArrayList<Integer> highScores = new ArrayList<Integer>();
+        while(input.hasNextInt()) {
+        	highScores.add(input.nextInt());
+        }
+        input.close();
+        Collections.sort(highScores, Collections.reverseOrder());
+        return highScores;
+    }
+    
+    public void updateScores(String inputFile) throws IOException  {
+    	if (points > classicHighScores.get(4)) { //last score is lowest score
+    		classicHighScores.set(4, points);
+    	}
+    	Collections.sort(classicHighScores, Collections.reverseOrder()); //only necessary for when original list has fewer than 5 scores
+    	FileWriter fw = new FileWriter(inputFile);
+    	PrintWriter pw = new PrintWriter(fw);
+    	for (int i = 0; i < classicHighScores.size(); i++) {
+    		pw.println(classicHighScores.get(i));
+    	};
+        pw.close();
+    }
 	
 
 	@Override
