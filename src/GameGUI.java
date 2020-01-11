@@ -318,6 +318,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		
 		exitBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				levelCounter = 1;
 				endGame(0);
 				setVisible(false);
 				titleScreen();
