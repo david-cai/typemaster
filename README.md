@@ -17,15 +17,6 @@ Speed Training: This mode is the crux of the application's idea. When first star
 
 Beat Typer: This experimental, for fun, mode makes the user conduct a song by typing. Type to the rhythm of songs like Flight of the Bumblebee and try to accrue the highest score possible. Each correct note counts for 1 point and each missed note is -5 points. Miss 3 notes in a row and you fail. Like in Classic, this mode utilizes the same high score feature.
 
-# How I built it
-The entire project is coded in Java and uses Swing for the GUI elements.
-
-# Accomplishments that I'm proud of
-I'm proud of being able to put this entire project together in scratch with limited time. More importantly, I'm proud to put together a project that I genuinely think is useful for myself and anyone else interesting in improving typing. The end product ended up being more fun than I anticipated and there's plenty of room for additional features and improvements in the future.
-
-# What I learned
-I learned the importance of code management as it became more and more difficult to get my bearings as the project increased in complexity. Proper planning and thoughtful design would have helped a lot had I initially spent more time on those ideas rather than jumping in headfirst.
-
 # What's next for Typemaster
 I intend to expand the Speed Training mode into a full-stack web application. This application will have user accounts/authentication in order to store scores and progression in databases. Users would also be able to visit other users' profiles in order to see their progressions in a nice visual manner. Furthermore, making a web application like this would allow for a global high scores list. My hope is that such a feature can enforce more friendly competition and drive people to work on practicing typing with the mode every day.
 
