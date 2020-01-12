@@ -17,7 +17,7 @@ Endless: This mode is identical to Classic in gameplay except that it does not e
 
 ![Classic Mode](https://github.com/david-cai/typemaster/blob/master/Typemaster%20Images/classic.png)
 
-![High Scores](https://github.com/david-cai/typemaster/blob/master/Typemaster%20Images/highscores.png)
+![High Scores](https://github.com/david-cai/typemaster/blob/master/Typemaster%20Images/highscore.png)
 
 Speed Training: This mode is the crux of the application's idea. When first starting, the user is prompted to take a benchmark test. The test gives the user 60 seconds to type as many words as possible. At the end, the user's benchmark score is saved. Then, the next time the user plays, the user must hit this benchmark score with 5 fewer seconds. For example, in the next run, the user hits the benchmark score in 52 seconds. The subsequent run will give the user 47 seconds. Failure to complete the run will give the user 5 extra seconds the run after. After 5 runs, the user is prompted to retake the benchmark test and set a new benchmark score to improve upon. The idea is that this mode would be played once every single day in order to reinforce typing skills and speed over time.
 
