@@ -1,12 +1,12 @@
 # MOSA Hackathon Submission: typemaster
 
-# To Begin:
-Download the repository and run the "Runner" class in order to launch the program. 
+# To Begin
+Download the repository and run the "Runner" class in order to launch the program. To reset high scores, feel free to modify the included text files for the specific mode. For the training mode, the default text file values are 0 0 61.
 
-# Inspiration:
+# Inspiration
 As a kid, I remember attending a computer skills class and playing typing games in order to learn how to type quickly. I wanted to make an improved version of the traditional typing game by adding unique modes and training mechanisms. I hope that this project can be useful to kids and adults alike who are learning to type for their first time or to improve their WPM gradually over time.
 
-# What it does:
+# What it does
 Typemaster is a typing training/learning application that is appropriate for typists of all skills and ages. Upon starting the program, the user is prompted with four different modes: classic, endless, speed training, and beat typer.
 
 Classic: This is the traditional waterfall typing game in which the user has to type words before they reach the bottom of the screen. Difficulty modifiers ensure that pacing is appropriate for all users. The difficulties will impact word frequency, drop speed, and difficulty level increase rates. Choose between easy, medium, or hard to find the right difficulty for you. At the end, the user's score is saved and if it is a top 5 score, it will be displayed.
