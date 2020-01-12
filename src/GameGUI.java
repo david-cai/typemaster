@@ -962,38 +962,38 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		
 		JLabel scoreTitle = new JLabel("High Scores:");
 		scoreTitle.setSize(200,80);
-		scoreTitle.setLocation(200, 50);
+		scoreTitle.setLocation(200, 75);
 		scoreTitle.setFont(font1);
 		scoreTitle.setForeground(Color.WHITE);	
 		
 		scoreOne.setSize(200,30);
-		scoreOne.setLocation(250, 125);
+		scoreOne.setLocation(250, 150);
 		scoreOne.setFont(font1);
 		scoreOne.setForeground(Color.WHITE);
 			
 		scoreTwo.setSize(200,30);
-		scoreTwo.setLocation(250, 175);
+		scoreTwo.setLocation(250, 200);
 		scoreTwo.setFont(font1);
 		scoreTwo.setForeground(Color.WHITE);
 				
 		scoreThree.setSize(200,30);
-		scoreThree.setLocation(250, 225);
+		scoreThree.setLocation(250, 250);
 		scoreThree.setFont(font1);
 		scoreThree.setForeground(Color.WHITE);	
 		
 		scoreFour.setSize(200,30);
-		scoreFour.setLocation(250, 275);
+		scoreFour.setLocation(250, 300);
 		scoreFour.setFont(font1);
 		scoreFour.setForeground(Color.WHITE);
 				
 		scoreFive.setSize(200,30);
-		scoreFive.setLocation(250, 325);
+		scoreFive.setLocation(250, 350);
 		scoreFive.setFont(font1);
 		scoreFive.setForeground(Color.WHITE);
 		
 		JButton nextBtn = new JButton("Continue");
 		nextBtn.setSize(250,50);
-		nextBtn.setLocation(175, 375);
+		nextBtn.setLocation(175, 400);
 		nextBtn.setFont(font1);
 		
 		nextBtn.addActionListener(new ActionListener() {
