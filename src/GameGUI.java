@@ -101,7 +101,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		if (runCount == 0) {		
 			timeLeft = benchmarkScores.get(2);
 		} else {
-			timeLeft = benchmarkScores.get(2) - 4;
+			timeLeft = benchmarkScores.get(2) - 2;
 		}
 		
 		currentWord = new JTextField("");
@@ -379,7 +379,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 			gameOverField = new JTextField("Run Complete");
 			System.out.println(runCount);
 			if (runCount != 5) {
-				timeLeft = benchmarkScores.get(2) - 4;
+				timeLeft = benchmarkScores.get(2) - 2;
 			} else {
 				timeLeft = 61;
 				benchmarkScores.set(2, timeUsed);
