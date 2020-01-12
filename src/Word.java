@@ -5,6 +5,10 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
+/**
+ * @author David Cai
+ * The Word class defines the Word object that the user must type for Classic/Endless/Training modes
+ */
 public class Word extends JFrame {
 
 	private String chosenWord;
@@ -24,6 +28,9 @@ public class Word extends JFrame {
 		createWordField();
 	}
 	
+	/**
+	 * This method updates the word as it falls to different colors
+	 */
 	public void updateWordField() {
 		yVal = yVal + fallSpeed;
 		wordField.setLocation(xVal, yVal);
@@ -35,15 +42,18 @@ public class Word extends JFrame {
 		}
 	}
 	
+	/**
+	 * This class creates the words for each mode
+	 */
 	public void createWordField() {
 		Font font1 = new Font("SansSerif", Font.PLAIN, 16);
 		Font font2 = new Font("SansSerif", Font.PLAIN, 48);
 		wordField = new JTextField(chosenWord);
-		if (fallSpeed == 0) {
+		if (fallSpeed == 0) { //Training mode
 			wordField.setLocation(125, 230);
 			wordField.setSize(350, 80);
 			wordField.setFont(font2);
-		} else {
+		} else { //Classic and endless modes
 			wordField.setLocation(xVal, yVal);
 			wordField.setBackground(Color.GREEN);
 			wordField.setSize(7 * chosenWord.length() + 50, 50);
@@ -54,6 +64,10 @@ public class Word extends JFrame {
 		frame.add(wordField);
 	}
 	
+	/**
+	 * This class checks if the word is at the bottom of the board
+	 * @return Boolean isBottom
+	 */
 	public boolean bottomBoard() {
 		if(yVal >= 477) {
 			return true;
@@ -62,6 +76,9 @@ public class Word extends JFrame {
 		}
 	}
 
+	/**
+	 * This method checks word equality
+	 */
 	@Override
 	public boolean equals(Object diffWord) {
 		if (diffWord instanceof String) {

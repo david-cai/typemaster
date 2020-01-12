@@ -15,27 +15,21 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.TimerTask;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-//import javax.swing.Timer;
-
-import java.util.TimerTask;
-//import java.util.Timer;
-
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-
+/**
+ * @author David Cai
+ * This class allows for the game to be run and contains all functionality and visuals related to the game
+ */
 public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	JTextField currentWord;
 	JLabel pointCount;
@@ -90,6 +84,10 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	
 
 	
+	/**
+	 * Constructor launches the game and sets up the appropriate files and variables
+	 * @throws FileNotFoundException
+	 */
 	public GameGUI() throws FileNotFoundException {
 		setLayout(null);
 		setBackground(Color.BLACK);
@@ -121,6 +119,9 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		titleScreen();
 	}
 	
+	/**
+	 * This method populates the title screen
+	 */
 	public void titleScreen() {
 		removeAll();
 		
@@ -152,6 +153,9 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		
 	}
 	
+	/**
+	 * This method populates the choose screen method
+	 */
 	public void chooseMode() {
 		removeAll();
 		JButton classicBtn = new JButton("Classic");
@@ -222,6 +226,9 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		
 	}
 	
+	/**
+	 * This method populates the difficulty select method
+	 */
 	public void difficultySelect() {
 		removeAll();
 		JButton easyBtn = new JButton("Easy");
@@ -269,9 +276,9 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		});
 	}
 	
-	
-
-	
+	/**
+	 * This method creates an instance of the Classic mode and populates it appropriately
+	 */
 	public void startClassic() {
 		removeAll();
 		Font font1 = new Font("SansSerif", Font.PLAIN, 16);
@@ -316,8 +323,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		diffDisp.setFont(font1);
 		diffDisp.setForeground(Color.WHITE);
 		diffDisp.setHorizontalAlignment(JTextField.CENTER);
-		
-		
+			
 		pointCount = new JLabel("0");
 		pointCount.setSize(60,30);
 		pointCount.setLocation(80, 10);
@@ -352,7 +358,6 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		    }          
 		});
 		
-		
 		add(score);
 		add(pointCount);
 		add(divider);
@@ -375,6 +380,12 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		
 	}
 
+	
+	/**
+	 * This method prompts the Game Over or Run Complete screen at the end of each mode.
+	 * It then allows the user to restart back at the title screen if they choose so.
+	 * @param game The int variable to control for which mode is played
+	 */
 	private void endGame(int game) {
 		removeAll();
 
@@ -436,6 +447,10 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		}
 	}
 	
+	/**
+	 * This mode allows the user to enter the typed word and send it for comparison.
+	 * @param modeSelect This int selects which mode is being played
+	 */
 	public void enterUserWord(int modeSelect) {
 		String userInput = currentWord.getText();
 		currentWord.setText("");
@@ -458,6 +473,11 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		}
 	}
 	
+	/**
+	 * This method checks that the user typed word is on the board currently
+	 * @param userInput User entered string
+	 * @return Boolean for if word is correct
+	 */
 	public boolean wordIsInGame(String userInput) {
 		java.util.Iterator<Word> wordIterator = wordsInGame.iterator();
 		while (wordIterator.hasNext()) {
@@ -469,6 +489,10 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		return false;
 	}
 
+	/**
+	 * This removes the word from the board if the user entered word is correct
+	 * @param userInput User entered string
+	 */
 	private void removeWord(String userInput) {
 		java.util.Iterator<Word> wordIterator = wordsInGame.iterator();
 		while(wordIterator.hasNext()) {
@@ -481,6 +505,10 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	}
 	
 
+	/**
+	 * This method makes a new word to be dropped when prompted
+	 * @param mode This int controls which mode we are in (classic vs endless)
+	 */
 	private void makeNewWord(int mode) {
 			String randomWord = getRandomWord();
 			Word newWord;
@@ -496,13 +524,20 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 			}
 	}
 	
+	/**
+	 * This method takes a random word from the word bank
+	 * @return String of random word
+	 */
 	private String getRandomWord() {
 		Random r = new Random();
 		int index = r.nextInt(wordOptions.size());
 		return wordOptions.get(index);
 	}
 	
-
+	/**
+	 * This method detects if the word reaches the bottom or not
+	 * @return
+	 */
 	public boolean collision() {
 		java.util.Iterator<Word> wordIterator = wordsInGame.iterator();
 		while(wordIterator.hasNext()) {
@@ -514,7 +549,10 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		return false;
 	}
 
-
+	
+	/**
+	 * This method moves all words down as time passes
+	 */
 	private void moveDown() {
 		java.util.Iterator<Word> wordIterator = wordsInGame.iterator();
 		while(wordIterator.hasNext()) {
@@ -524,8 +562,10 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		updateUI();
 	}
 
+	/**
+	 * This method adjusts the difficulty of the game as time progresses
+	 */
 	private void adjustDifficulty() {
-
 		if (currentTime == 0 || currentTime % (difficulty / 10) == 0) {
 			difficulty--;
 			int diffMod;
@@ -545,6 +585,12 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		}
 	}
 	
+    /**
+     * This method gets the lists of words from the input file
+     * @param inputFile File of words
+     * @return ArrayList full of words
+     * @throws FileNotFoundException
+     */
     public ArrayList<String> getWords(String inputFile) throws FileNotFoundException {
         
     	File f = new File(inputFile);
@@ -559,6 +605,9 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
     }
        
     ///////Speed training mode
+    /**
+     * This method launches the speed training mode and populates it appropriately
+     */
     public void startTraining() {
     	removeAll();
     	Font font1 = new Font("SansSerif", Font.PLAIN, 16);
@@ -622,22 +671,6 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		timeCount.setLocation(505, 10);
 		timeCount.setForeground(Color.WHITE);
 		timeCount.setFont(font1);
-
-// exit not needed for this mode i think
-//		JButton exitBtn = new JButton("Exit");
-//		exitBtn.setSize(50,35);
-//		exitBtn.setLocation(515, 35);
-//		exitBtn.setFont(font1);
-//		
-//		exitBtn.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				endGame(0);
-//				setVisible(false);
-//				titleScreen();
-//		    }          
-//		});
-		
-		
 		
 		add(score);
 		add(pointCount);
@@ -684,8 +717,10 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		setVisible(true);
     }
     
-    ///////Music Mode (maybe separate to diff class)
-    
+    ///////Music Mode
+    /**
+     * This method launches the music mode and populates it appropriately
+     */
     public void startMusic() {
 		removeAll();
 		
@@ -783,7 +818,6 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 			
 		};
 
-		
 		TimerTask task2 = new TimerTask() {
 
 			@Override
@@ -792,7 +826,6 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 					beat.setLocation(100,x--);
 				}
 			}
-			
 		};
 		
 		timer2 = new java.util.Timer();
@@ -869,7 +902,6 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		beatStrike.setLocation(125, 253);
 		beatStrike.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
 		
-
 		add(countdown);
 		add(beat);
 		add(letter);
@@ -883,28 +915,32 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		add(strike);
 		add(divider);
 		add(beatStrike);
-		
-	
-
 		setVisible(true);
-
 		setFocusable(true);
 		requestFocus();
-		
 		this.addKeyListener(this);
 	}
 
 	
+	/**
+	 * Setter method for difficulty selected
+	 * @param i
+	 */
 	public void setSelectDiff(int i) {
 		this.selectDiff = i;
 	}
 	
+	/**
+	 * Getter method for difficulty selected
+	 * @return difficulty selected
+	 */
 	public int getSelectDiff() {
 		return selectDiff;
 	}
 	
-	//High Score calcs for classic, training, and rhythm modes
-	
+	/**
+	 * This method displays the top five highest scores for the mode being played
+	 */
 	public void showHighScores() {
 		removeAll();
 		
@@ -928,33 +964,28 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		scoreTitle.setSize(200,80);
 		scoreTitle.setLocation(200, 50);
 		scoreTitle.setFont(font1);
-		scoreTitle.setForeground(Color.WHITE);
-		
+		scoreTitle.setForeground(Color.WHITE);	
 		
 		scoreOne.setSize(200,30);
 		scoreOne.setLocation(250, 125);
 		scoreOne.setFont(font1);
 		scoreOne.setForeground(Color.WHITE);
-		
-		
+			
 		scoreTwo.setSize(200,30);
 		scoreTwo.setLocation(250, 175);
 		scoreTwo.setFont(font1);
 		scoreTwo.setForeground(Color.WHITE);
-		
-		
+				
 		scoreThree.setSize(200,30);
 		scoreThree.setLocation(250, 225);
 		scoreThree.setFont(font1);
-		scoreThree.setForeground(Color.WHITE);
-		
+		scoreThree.setForeground(Color.WHITE);	
 		
 		scoreFour.setSize(200,30);
 		scoreFour.setLocation(250, 275);
 		scoreFour.setFont(font1);
 		scoreFour.setForeground(Color.WHITE);
-		
-		
+				
 		scoreFive.setSize(200,30);
 		scoreFive.setLocation(250, 325);
 		scoreFive.setFont(font1);
@@ -986,6 +1017,12 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		setVisible(true);
 	}
 	
+    /**
+     * This method gets scores from input files
+     * @param inputFile The file containing scores
+     * @return ArrayList full of scores
+     * @throws FileNotFoundException
+     */
     public ArrayList<Integer> getScores(String inputFile) throws FileNotFoundException {
         
     	File f = new File(inputFile);
@@ -1002,6 +1039,11 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
         return highScores;
     }
     
+    /**
+     * This method updates the given file with new scores
+     * @param inputFile File of scores
+     * @throws IOException
+     */
     public void updateScores(String inputFile) throws IOException  {
     	if (modeSelect == 0) {
 	    	if (points > classicHighScores.get(4)) { //last score is lowest score
@@ -1047,6 +1089,9 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
     }
 	
 
+	/**
+	 * This method moves down words and ends game if collision is detected
+	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		currentTime++;
@@ -1065,12 +1110,19 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		}
 		adjustDifficulty();
 	}
+	
+	/**
+	 * Not Used 
+	 */
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	/**
+	 * This method is for the music mode and detects correct key presses
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 
@@ -1094,6 +1146,9 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		
 	}
 
+	/**
+	 * Not Used
+	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub

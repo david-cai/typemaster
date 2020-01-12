@@ -2,6 +2,10 @@ import java.io.FileNotFoundException;
 
 import javax.swing.JFrame;
 
+/**
+ * @author David Cai
+ * This class allows user to run an instance of the game
+ */
 public class Runner extends JFrame {
 
 	private GameGUI game;
