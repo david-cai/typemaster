@@ -53,7 +53,10 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	private ArrayList<String> wordOptions;
 	private ArrayList<Integer> classicHighScores;
 	private ArrayList<Integer> musicHighScores;
+	private ArrayList<Integer> benchmarkScores;
 	private int modeSelect;
+	private int benchmarkCount = 0;
+	private int runCount;
 	
 	private char c;
 	private char nextC;
@@ -92,6 +95,8 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		wordOptions = getWords("medium_length.txt");
 		classicHighScores = getScores("classicHighScores.txt");
 		musicHighScores = getScores("musicHighScores.txt");
+		benchmarkScores = getScores("trainingBenchmarks.txt");
+		runCount = benchmarkScores.get(1); //this is the training run number 
 		currentWord = new JTextField("");
 		currentWord.addActionListener(new ActionListener () {
 
@@ -364,6 +369,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		Font font1 = new Font("SansSerif", Font.BOLD, 40);
 		if (game == 2) {
 			gameOverField = new JTextField("Run Complete");
+			timeLeft = 61;
 		} else {
 			gameOverField = new JTextField("Game Over");
 		}
@@ -563,6 +569,28 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		pointCount.setForeground(Color.WHITE);
 		pointCount.setFont(font1);
 		
+		JLabel run;
+		if (runCount != 0) {
+			run = new JLabel("Run: " + runCount + "/5");
+		} else {
+			run = new JLabel("Benchmark Run");
+		}
+		run.setSize(140,30);
+		run.setLocation(230, 10);
+		run.setFont(font1);
+		run.setForeground(Color.WHITE);
+		run.setHorizontalAlignment(JTextField.CENTER);
+		
+		if (runCount != 0) {
+			JLabel targetScore = new JLabel("Target: " + benchmarkScores.get(0));
+			targetScore.setSize(140,30);
+			targetScore.setLocation(230, 35);
+			targetScore.setFont(font1);
+			targetScore.setForeground(Color.WHITE);
+			targetScore.setHorizontalAlignment(JTextField.CENTER);
+			add(targetScore);
+		}
+		
 		JLabel timeCount = new JLabel("Time: " + timeLeft);
 		timeCount.setSize(80,30);
 		timeCount.setLocation(505, 10);
@@ -589,6 +617,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		add(pointCount);
 		add(divider);
 		add(typeHere);
+		add(run);
 		add(timeCount);
 		add(currentWord);
 		//add(exitBtn);
@@ -605,6 +634,12 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 				} else {
 					timer3.cancel();
 					setVisible(false);
+					try {
+						updateScores("trainingBenchmarks.txt");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					endGame(2);
 				}
 			}
@@ -613,7 +648,7 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		
 		timer3 = new java.util.Timer();
 		timer3.scheduleAtFixedRate(timeCountdown, 0, 1000);
-		
+
 		setVisible(true);
     }
     
@@ -945,6 +980,22 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	        	};
 	            pw.close();
 	    	}
+    	} else if (modeSelect == 2) {
+    		if (runCount == 0) {
+    			benchmarkScores.set(0, points);
+    		}
+    		if (runCount != 5) {
+    			benchmarkScores.set(1, runCount++);
+    		} else {
+    			runCount = 0;
+    			benchmarkScores.set(1, runCount);
+    		}
+        	FileWriter fw = new FileWriter(inputFile);
+        	PrintWriter pw = new PrintWriter(fw);
+        	for (int i = 0; i < benchmarkScores.size(); i++) {
+        		pw.println(benchmarkScores.get(i));
+        	};
+            pw.close();
     	} else if (modeSelect == 3) {
 	    	if (scoreCount > musicHighScores.get(4)) { //last score is lowest score
 	    		musicHighScores.set(4, scoreCount);
