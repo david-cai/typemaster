@@ -101,7 +101,12 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		if (runCount == 0) {		
 			timeLeft = benchmarkScores.get(2);
 		} else {
-			timeLeft = benchmarkScores.get(2) - 2;
+			if (benchmarkScores.get(2) == 61) {
+				timeLeft = benchmarkScores.get(2) - 3; //otherwise we miss a second
+			} else {
+				timeLeft = benchmarkScores.get(2) - 2;
+			}
+			
 		}
 		
 		currentWord = new JTextField("");
@@ -654,6 +659,9 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 					timeLeft--;
 					timeCount.setText("Time: " + timeLeft);
 				} else {
+					if (runCount != 0) {
+						benchmarkScores.set(2, timeUsed + 7); //adding 5 seconds back (-2 for taking off "3" seconds)
+					}
 					timer3.cancel();
 					setVisible(false);
 					endGame(2);
