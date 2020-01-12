@@ -79,7 +79,8 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 	private int strikeCount = 0;
 	private int x = 150;
 	private int startCount = 5;
-	private int timeLeft = 61;
+	private int timeLeft;
+	private int timeUsed;
 	
 	private JLabel scoreOne;
 	private JLabel scoreTwo;
@@ -97,6 +98,12 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 		musicHighScores = getScores("musicHighScores.txt");
 		benchmarkScores = getScores("trainingBenchmarks.txt");
 		runCount = benchmarkScores.get(1); //this is the training run number 
+		if (runCount == 0) {		
+			timeLeft = benchmarkScores.get(2);
+		} else {
+			timeLeft = benchmarkScores.get(2) - 4;
+		}
+		
 		currentWord = new JTextField("");
 		currentWord.addActionListener(new ActionListener () {
 
@@ -368,8 +375,22 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 
 		Font font1 = new Font("SansSerif", Font.BOLD, 40);
 		if (game == 2) {
+			timeUsed = 0;
 			gameOverField = new JTextField("Run Complete");
-			timeLeft = 61;
+			System.out.println(runCount);
+			if (runCount != 5) {
+				timeLeft = benchmarkScores.get(2) - 4;
+			} else {
+				timeLeft = 61;
+				benchmarkScores.set(2, timeUsed);
+			}
+			try {
+				updateScores("trainingBenchmarks.txt");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			points = 0;
 		} else {
 			gameOverField = new JTextField("Game Over");
 		}
@@ -629,18 +650,21 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
 			@Override
 			public void run() {
 				if (timeLeft > 0) {
+					timeUsed++;
 					timeLeft--;
 					timeCount.setText("Time: " + timeLeft);
 				} else {
 					timer3.cancel();
 					setVisible(false);
-					try {
-						updateScores("trainingBenchmarks.txt");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 					endGame(2);
+				}
+				if (runCount != 0) {
+					if (points != 0 && points >= benchmarkScores.get(0)) {
+						benchmarkScores.set(2, timeUsed);
+						timer3.cancel();
+						setVisible(false);
+						endGame(2);
+					}
 				}
 			}
 			
@@ -964,7 +988,9 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
         	highScores.add(input.nextInt());
         }
         input.close();
-        Collections.sort(highScores, Collections.reverseOrder());
+        if (inputFile != "trainingBenchmarks.txt") {
+        	Collections.sort(highScores, Collections.reverseOrder());
+        }
         return highScores;
     }
     
@@ -985,10 +1011,11 @@ public class GameGUI extends JPanel implements KeyListener, ActionListener{
     			benchmarkScores.set(0, points);
     		}
     		if (runCount != 5) {
-    			benchmarkScores.set(1, runCount++);
-    		} else {
-    			runCount = 0;
+    			runCount++;
     			benchmarkScores.set(1, runCount);
+    		} else {
+				runCount = 0;
+				benchmarkScores.set(1, runCount);
     		}
         	FileWriter fw = new FileWriter(inputFile);
         	PrintWriter pw = new PrintWriter(fw);
